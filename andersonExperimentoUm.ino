@@ -40,13 +40,14 @@ void setup() {
 }
 
 int count_disp=0;
-
+unsigned long tempo_atual, tempo_anterior = 0;
 void loop() {
-  // put your main code here, to run repeatedly:
+
   displaysete();
-  delay(10);
-  count_disp++;
-  if (count_disp%100==0){
+  delay(1);
+  tempo_atual = millis();
+  if ((tempo_atual - tempo_anterior) >= 1000){
+    tempo_anterior = tempo_atual;
     unidade ++;
     if(unidade > 9) {
       unidade = 0;
@@ -55,11 +56,11 @@ void loop() {
         dezena = 0;
       }
     }
-  }
+  } 
 }
   
 
-  void displaysete (void) {
+void displaysete (void) {
 
   switch(estado_displaysete) {
     case 1:
@@ -70,13 +71,11 @@ void loop() {
       digitalWrite(seg_d, displayset[unidade][3]);
       digitalWrite(seg_e, displayset[unidade][4]);
       digitalWrite(seg_f, displayset[unidade][5]);
-      digitalWrite(seg_g, displayset[unidade][6]);
-      
+      digitalWrite(seg_g, displayset[unidade][6]); 
       digitalWrite(disp_b, LOW);
       estado_displaysete=2;
-      break;
-      
-
+      break; 
+  
     case 2:
       digitalWrite(disp_b, HIGH);
       digitalWrite(seg_a, displayset[dezena][0]);
@@ -86,11 +85,9 @@ void loop() {
       digitalWrite(seg_e, displayset[dezena][4]);
       digitalWrite(seg_f, displayset[dezena][5]);
       digitalWrite(seg_g, displayset[dezena][6]);
-    
       digitalWrite(disp_a, LOW);
       estado_displaysete=1;
       break;
-
-    }
   }
+}
  
