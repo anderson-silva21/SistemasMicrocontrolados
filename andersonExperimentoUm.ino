@@ -21,6 +21,11 @@ int displayset[10][7]={{1,1,1,1,1,1,0}, //0
                        {1,1,1,1,0,1,1}  //9
                       };
 
+void displaysete(void);
+int dezena  = 0;
+int unidade = 0;
+int estado_displaysete=1;
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(seg_a,  OUTPUT);
@@ -34,28 +39,58 @@ void setup() {
   pinMode(disp_b, OUTPUT);
 }
 
+int count_disp=0;
+
 void loop() {
   // put your main code here, to run repeatedly:
-  int unidade = 8;
-  int dezena  = 8;
-  
-  digitalWrite(seg_a, displayset[unidade][0]);
-  digitalWrite(seg_b, displayset[unidade][1]);
-  digitalWrite(seg_c, displayset[unidade][2]);
-  digitalWrite(seg_d, displayset[unidade][3]);
-  digitalWrite(seg_e, displayset[unidade][4]);
-  digitalWrite(seg_f, displayset[unidade][5]);
-  digitalWrite(seg_g, displayset[unidade][6]);
-
-  digitalWrite(disp_b, LOW);
-
-  digitalWrite(seg_a, displayset[dezena][0]);
-  digitalWrite(seg_b, displayset[dezena][1]);
-  digitalWrite(seg_c, displayset[dezena][2]);
-  digitalWrite(seg_d, displayset[dezena][3]);
-  digitalWrite(seg_e, displayset[dezena][4]);
-  digitalWrite(seg_f, displayset[dezena][5]);
-  digitalWrite(seg_g, displayset[dezena][6]);
-
-  digitalWrite(disp_a, LOW);
+  displaysete();
+  delay(10);
+  count_disp++;
+  if (count_disp%100==0){
+    unidade ++;
+    if(unidade > 9) {
+      unidade = 0;
+      dezena++;
+      if(dezena > 9) {
+        dezena = 0;
+      }
+    }
+  }
 }
+  
+
+  void displaysete (void) {
+
+  switch(estado_displaysete) {
+    case 1:
+      digitalWrite(disp_a, HIGH);
+      digitalWrite(seg_a, displayset[unidade][0]);
+      digitalWrite(seg_b, displayset[unidade][1]);
+      digitalWrite(seg_c, displayset[unidade][2]);
+      digitalWrite(seg_d, displayset[unidade][3]);
+      digitalWrite(seg_e, displayset[unidade][4]);
+      digitalWrite(seg_f, displayset[unidade][5]);
+      digitalWrite(seg_g, displayset[unidade][6]);
+      
+      digitalWrite(disp_b, LOW);
+      estado_displaysete=2;
+      break;
+      
+
+    case 2:
+      digitalWrite(disp_b, HIGH);
+      digitalWrite(seg_a, displayset[dezena][0]);
+      digitalWrite(seg_b, displayset[dezena][1]);
+      digitalWrite(seg_c, displayset[dezena][2]);
+      digitalWrite(seg_d, displayset[dezena][3]);
+      digitalWrite(seg_e, displayset[dezena][4]);
+      digitalWrite(seg_f, displayset[dezena][5]);
+      digitalWrite(seg_g, displayset[dezena][6]);
+    
+      digitalWrite(disp_a, LOW);
+      estado_displaysete=1;
+      break;
+
+    }
+  }
+ 
