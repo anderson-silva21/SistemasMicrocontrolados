@@ -27,6 +27,7 @@ int unidade = 0;
 int estado_displaysete=1;
 
 void setup() {
+  Serial.begin(115200);
   // put your setup code here, to run once:
   pinMode(seg_a,  OUTPUT);
   pinMode(seg_b,  OUTPUT);
@@ -37,14 +38,25 @@ void setup() {
   pinMode(seg_g,  OUTPUT);
   pinMode(disp_a, OUTPUT);
   pinMode(disp_b, OUTPUT);
+  pinMode(A1, INPUT);
 }
 
 int count_disp=0;
 unsigned long tempo_atual, tempo_anterior = 0;
+int pot;
 void loop() {
-
+  pot = analogRead(A1);
+  Serial.print("Entrada:");
+  Serial.print(pot);
+  pot = map(pot, 0,1023,0,99);
+  Serial.print(" Potenciometro:");
+  Serial.println(pot);
+  dezena = pot/10;
+  unidade = pot%10;
+  
   displaysete();
-  delay(1);
+  delay(10);
+  /*
   tempo_atual = millis();
   if ((tempo_atual - tempo_anterior) >= 1000){
     tempo_anterior = tempo_atual;
@@ -56,11 +68,11 @@ void loop() {
         dezena = 0;
       }
     }
-  } 
+  }*/
 }
   
 
-void displaysete (void) {
+void displaysete(void) {
 
   switch(estado_displaysete) {
     case 1:
