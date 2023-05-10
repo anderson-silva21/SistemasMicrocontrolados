@@ -1,11 +1,10 @@
-  #include <LedControl.h>
-
+#include <LedControl.h>
 
 #define VRX_PIN  A0 // Arduino pin connected to VRX pin
 #define VRY_PIN  A1 // Arduino pin connected to VRY pin
 
-int x = 0; // To store value of the X axis
-int y = 0; // To store value of the Y axis
+int xValue = 0; // To store value of the X axis
+int yValue = 0; // To store value of the Y axis
  
 LedControl lc = LedControl(12, 11, 10, 2); // (dataPin, clockPin, csPin, totalDevices)
  
@@ -257,13 +256,11 @@ void setup() {
 //LOOP
 void loop()
 {
- 
+  
  
  
  if(started == 0)
  {
-    xValue = analogRead(VRX_PIN);
-    yValue = analogRead(VRY_PIN);
      splashScreen();
  
      for (int i = 0; i < length; i++)
@@ -315,7 +312,7 @@ void loop()
  
      while(started == 1)
      {
- 
+
          if(allLines < 100)
          {
              level = 0;              //Level 0
@@ -424,12 +421,17 @@ void loop()
  
          for(int krok = 0; krok < lcRows + 1; krok++)
          {
+              
              colCheck = 0;
  
  
              for(int i = 0; i < (lcCols / 2); i++)
              {
-                 if((y < 400) && (fromLeft > 0))
+              xValue = analogRead(VRX_PIN);
+              yValue = analogRead(VRY_PIN);
+              Serial.println(xValue);
+              Serial.println(yValue);
+                 if((yValue < 450) && (fromLeft > 0))
                  {
                      moveCheck = 0;
                      for(int colnum = fromLeft; colnum < (lcCols - fromRight); colnum++)
@@ -468,7 +470,7 @@ void loop()
  
              for(int i = 0; i < (lcCols / 2); i++)
              {
-                 if((y > 600) && (fromRight > 0))
+                 if((yValue > 600) && (fromRight > 0))
                  {
                      moveCheck = 0;
                      for(int colnum = fromLeft; colnum < (lcCols - fromRight); colnum++)
@@ -503,7 +505,7 @@ void loop()
  
  
  
-             if(digitalRead(down_button) == LOW)
+             if(xValue < 450)
              {
                  brickDelay = 0;
                  playNote('b', 10);
